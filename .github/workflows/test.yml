@@ -32,22 +32,22 @@ jobs:
         run: sudo apt install -y ${{ env.DEPENDENCIES }}
 
       - name: Choose image distro
-        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        
         run: |
           echo "IMAGE_DISTRO=ubuntu" >> $GITHUB_ENV
 
       - name: Choose image distro
-        if: github.event_name == 'schedule'
+        
         run: |
           echo "IMAGE_DISTRO=fedora" >> $GITHUB_ENV
 
       - name: Build container
-        if: github.ref_name != 'main'
+        
         run: make ${{ env.IMAGE_DISTRO }}
         working-directory: utilities/containers
 
       - name: Download container
-        if: github.ref_name == 'main'
+       
         run: podman pull ghcr.io/ovn-org/ovn-tests:${{ env.IMAGE_DISTRO }}
 
       - name: Tag image
@@ -113,20 +113,20 @@ jobs:
         sudo apt -y install linux-modules-extra-$(uname -r)
 
     - name: checkout
-      if: github.event_name == 'push' || github.event_name == 'pull_request'
+     
       uses: actions/checkout@v4
       with:
         submodules: recursive
 
     # For weekly runs, don't update submodules
     - name: checkout without submodule
-      if: github.event_name == 'schedule'
+      
       uses: actions/checkout@v4
 
     # Weekly runs test using the tip of the most recent stable OVS branch
     # instead of the submodule.
     - name: checkout OVS
-      if: github.event_name == 'schedule'
+      
       uses: actions/checkout@v4
       with:
         repository: 'openvswitch/ovs'
@@ -134,7 +134,7 @@ jobs:
         path: 'ovs'
 
     - name: checkout OVS most recent stable branch.
-      if: github.event_name == 'schedule'
+     
       run: |
         git checkout \
           $(git branch -a -l '*branch-*' | sed 's/remotes\/origin\///' | \
@@ -175,7 +175,7 @@ jobs:
       OPTS:  --disable-ssl
 
     name:    osx clang --disable-ssl
-    if: github.repository_owner == 'ovn-org' || github.event_name != 'schedule'
+  
     runs-on: macos-latest
 
     strategy:
@@ -183,25 +183,25 @@ jobs:
 
     steps:
     - name: checkout
-      if: github.event_name == 'push' || github.event_name == 'pull_request'
+ 
       uses: actions/checkout@v4
       with:
         submodules: recursive
     # For weekly runs, don't update submodules
     - name: checkout without submodule
-      if: github.event_name == 'schedule'
+     
       uses: actions/checkout@v4
     # Weekly runs test using the tip of the most recent stable OVS branch
     # instead of the submodule.
     - name: checkout OVS
-      if: github.event_name == 'schedule'
+    
       uses: actions/checkout@v4
       with:
         repository: 'openvswitch/ovs'
         fetch-depth: 0
         path: 'ovs'
     - name: checkout OVS most recent stable branch.
-      if: github.event_name == 'schedule'
+      
       run: |
         git checkout \
           $(git branch -a -l '*branch-*' | sed 's/remotes\/origin\///' | \
@@ -230,7 +230,7 @@ jobs:
 
   build-linux-rpm:
     name: linux rpm fedora
-    if: github.repository_owner == 'ovn-org' || github.event_name != 'schedule'
+
     runs-on: ubuntu-24.04
     container: fedora:40
     timeout-minutes: 30

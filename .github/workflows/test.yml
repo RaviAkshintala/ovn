@@ -5,20 +5,7 @@ on: [push, pull_request]
 
 
 jobs:
-  prepare-container:
-    # This job has the following matrix, x: Job trigger, y: Branch
-    # (scheduled jobs run only on main):
-    # +-------+-------------------+-------------------+
-    # |       | Push/Pull request |     Scheduled     |
-    # +-------+-------------------+-------------------+
-    # |  main |  ghcr.io - Ubuntu | ghcr.io - Fedora  |
-    # +-------+-------------------+-------------------+
-    # | !main |  Builds - Ubuntu  | xxxxxxxxxxxxxxxxx |
-    # +-------+-------------------+-------------------+
-    env:
-      DEPENDENCIES: podman
-    name: Prepare container
-    if: github.repository_owner == 'ovn-org' || github.event_name != 'schedule'
+
     runs-on: ubuntu-24.04
 
     steps:

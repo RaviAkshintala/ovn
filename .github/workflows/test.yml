@@ -19,7 +19,7 @@ jobs:
     env:
       DEPENDENCIES: podman
     name: Prepare container
-    if: github.repository_owner == 'ovn-org' || github.event_name != 'schedule'
+    
     runs-on: ubuntu-24.04
 
     steps:
